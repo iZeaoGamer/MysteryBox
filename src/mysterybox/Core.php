@@ -38,6 +38,9 @@ use pocketmine\tile\Tile;
 
 use mysterybox\tile\MysteryTile;
 
+use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\Main;
+
 class Core extends PluginBase{
 	
 	public const config_ver = 1;
@@ -57,7 +60,98 @@ class Core extends PluginBase{
 	/**
 	 * @return Core
 	 */
-	
+	public $ce = [
+	26 => "MENDING",
+	        100 => "LIFESTEAL",
+    		101 => "BLIND",
+                102 => "DEATHBRINGER",
+    		103 => "GOOEY",
+    		104 => "POISON",
+    		108 => "AUTOREPAIR",
+    		109 => "CRIPPLE",
+    	        109 => "CRIPPLINGSTRIKE",
+   		111 => "VAMPIRE",
+    		113 => "CHARGE",
+    		114 => "AERIAL",
+    		115 => "WITHER",
+    		117 => "DISARMING",
+    		118 => "SOULBOUND",
+    		119 => "HALLUCINATION",
+                120 => "BLESSED",
+    		121 => "DISARMR",
+    		122 => "BACKSTAB",
+    		123 => "LIGHTNING",
+    		200 => "EXPLOSIVE", //Not accurate
+    		201 => "SMELTING",
+    		202 => "ENERGIZING",
+    		203 => "QUICKENING",
+    		204 => "LUMBERJACK",
+    		205 => "TELEPATHY",
+    		206 => "DRILLER",
+    		207 => "HASTE",
+    		208 => "FERTILIZER",
+    		209 => "FARMER",
+    		210 => "HARVEST",
+    		211 => "OXYGENATE",
+		212 => "JACKPOT",
+		301 => "WITHERSKULL",
+   	        303 => "PARALYZE",
+		304 => "MOLOTOV",
+		305 => "VOLLEY",
+    		306 => "AUTOAIM",
+    		307 => "PIERCING",
+    		308 => "SHUFFLE",
+    		309 => "BOUNTYHUNTER",
+    		310 => "HEALING",
+   		311 => "BLAZE",
+    		312 => "HEADHUNTER",
+    		313 => "GRAPPLING",
+    		314 => "PORKIFIED",
+    		315 => "MISSILE",
+    		316 => "PLACEHOLDER",
+		400 => "MOLTEN",
+    		401 => "ENLIGHTED",
+    		402 => "HARDENED",
+		403 => "POISONED",
+		404 => "FROZEN",
+		405 => "OBSIDIANSHIELD",
+		406 => "REVULSION",
+    		407 => "SELFDESTRUCT",
+		408 => "CURSED",
+		409 => "ENDERSHIFT",
+		410 => "DRUNK",
+		411 => "BERSERKER",
+		412 => "CLOAKING",
+		413 => "REVIVE",
+		414 => "SHRINK",
+		415 => "GROW",
+   		416 => "CACTUS",
+		417 => "ANTIKNOCKBACK",
+		418 => "FORCEFIELD",
+		419 => "OVERLOAD",
+		420 => "ARMORED",
+		421 => "TANK",
+		422 => "HEAVY",
+		423 => "SHIELDED",
+		424 => "POISONOUSCLOUD",
+    		600 => "IMPLANTS",
+    		601 => "GLOWING",
+		602 => "MEDITATION",
+		603 => "FOCUSED",
+		604 => "ANTITOXIC",
+		800 => "PARACHUTE",
+    		801 => "CHICKEN",
+		802 => "PROWL",
+    		803 => "SPIDER",
+    		804 => "ENRAGED",
+    		805 => "VACUUM",
+    		500 => "GEARS",
+    		501 => "SPRINGS",
+    		502 => "STOMP",
+    		503 => "JETPACK",
+    		504 => "MAGMAWALKER",
+    		700 => "RADAR",
+	];
 	public static function getInstance() : Core{
 		return self::$instance;
 	}
@@ -104,6 +198,12 @@ class Core extends PluginBase{
 		$this->getLogger()->info("All configuration seems to be fine, system has been enabled");
 	}
 	
+	/**
+     * @return \PiggyCustomEnchants\Main
+     */
+    public function getCustomEnchants(){
+        return $this->ce;
+    }
 	/**
 	 * @param void
 	 */
@@ -253,11 +353,17 @@ class Core extends PluginBase{
 				if(($k % 2) == 0){
 					if(is_numeric($d)){
 						$type = Enchantment::getEnchantment((int) $d);
+					}
+					if (is_null($enchantment = CustomEnchants::getEnchantment($d)));
 					}elseif(is_string($d)){
 						$type = Enchantment::getEnchantmentByName($d);
 					}
+					if (is_null($enchantment)){
+					    $ce = CustomEnchants::getEnchantmentByName($d);
 				}elseif($k % 2 == 1 and isset($type)){
 					$item->addEnchantment(new EnchantmentInstance($type, (int) $d));
+					$main = $this->getCustomEnchantments()->addEnchantment($this->ce());
+					$this->getCustomEnchantments()->addEnchantment($this->ce());
 					$type = null;
 				}
 			}
