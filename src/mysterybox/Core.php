@@ -61,7 +61,6 @@ class Core extends PluginBase{
 	 * @return Core
 	 */
 	public $ce = [
-	26 => "MENDING",
 	        100 => "LIFESTEAL",
     		101 => "BLIND",
                 102 => "DEATHBRINGER",
@@ -362,8 +361,8 @@ class Core extends PluginBase{
 					    $ce = CustomEnchants::getEnchantmentByName($d);
 				}elseif($k % 2 == 1 and isset($type)){
 					$item->addEnchantment(new EnchantmentInstance($type, (int) $d));
-					$main = $this->getCustomEnchantments()->addEnchantment($this->ce());
-					$this->getCustomEnchantments()->addEnchantment($this->ce());
+					$main = $this->getCustomEnchantments()->addEnchantment($ce);
+					$this->getCustomEnchantments()->addEnchantment($ce);
 					$type = null;
 				}
 			}
